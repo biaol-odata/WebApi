@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace Microsoft.Test.E2E.AspNet.OData.Formatter.JsonLight.Metadata.Controlle
         }
 
         [EnableQuery(PageSize = 1)]
-        public override Task<IEnumerable<StubEntity>> Get()
+        public override Task<IQueryable<StubEntity>> Get()
         {
             return base.Get();
         }

@@ -95,12 +95,12 @@ namespace Microsoft.Test.E2E.AspNet.OData.Common.Controllers
             });
         }
 
-        [EnableQuery]
-        public virtual Task<System.Collections.Generic.IEnumerable<TEntity>> Get()
+        //[EnableQuery]
+        public virtual Task<IQueryable<TEntity>> Get()
         {
             return Task.Factory.StartNew(() =>
             {
-                return this.LocalTable.Values.AsEnumerable();
+                return this.LocalTable.Values.AsQueryable();
             });
         }
 

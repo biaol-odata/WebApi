@@ -2,6 +2,7 @@
 // Licensed under the MIT License.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Test.E2E.AspNet.OData.Common.Controllers;
 using Microsoft.Test.E2E.AspNet.OData.Formatter.JsonLight.Metadata.Model;
 
@@ -19,7 +20,7 @@ namespace Microsoft.Test.E2E.AspNet.OData.Formatter.JsonLight.Metadata.Controlle
             }
         }
 
-        public override System.Threading.Tasks.Task<IEnumerable<EntityWithComplexProperties>> Get()
+        public override System.Threading.Tasks.Task<IQueryable<EntityWithComplexProperties>> Get()
         {
             return base.Get();
         }

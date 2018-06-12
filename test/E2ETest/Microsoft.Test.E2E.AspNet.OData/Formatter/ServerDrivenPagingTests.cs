@@ -31,7 +31,7 @@ namespace Microsoft.Test.E2E.AspNet.OData.Formatter
         }
 
         [EnableQuery(PageSize = 10)]
-        public override System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Product>> Get()
+        public override System.Threading.Tasks.Task<System.Linq.IQueryable<Product>> Get()
         {
             return base.Get();
         }
