@@ -33,9 +33,9 @@ namespace Microsoft.Test.E2E.AspNet.OData.DollarLevels
         }
 
         [Theory]
-        [InlineData("$expand=Manager($levels=-1)", 
+        [InlineData("$expand=Manager($levels=-1)",
             "Levels option must be a non-negative integer or 'max', it is set to '-1' instead.")]
-        [InlineData("$expand=Manager($levels=2;$expand=DirectReports($levels=-1))", 
+        [InlineData("$expand=Manager($levels=2;$expand=DirectReports($levels=-1))",
             "Levels option must be a non-negative integer or 'max', it is set to '-1' instead.")]
         [InlineData("$expand=Manager($levels=-1;$expand=DirectReports($levels=max))",
             "Levels option must be a non-negative integer or 'max', it is set to '-1' instead.")]
@@ -43,7 +43,7 @@ namespace Microsoft.Test.E2E.AspNet.OData.DollarLevels
             "The request includes a $expand path which is too deep. The maximum depth allowed is 4.")]
         [InlineData("$expand=DirectReports($levels=3;$expand=Manager($levels=3))",
             "The request includes a $expand path which is too deep. The maximum depth allowed is 4.")]
-        public async Task LevelsWithInvalidValue(string query, string errorMessage) 
+        public async Task LevelsWithInvalidValue(string query, string errorMessage)
         {
             string requestUri = this.BaseAddress + "/odata/DLManagers(5)?" + query;
 
@@ -56,15 +56,15 @@ namespace Microsoft.Test.E2E.AspNet.OData.DollarLevels
         }
 
         [Theory]
-        [InlineData("$expand=Manager($levels=3)", 
+        [InlineData("$expand=Manager($levels=3)",
             "$expand=Manager($expand=Manager($expand=Manager))")]
-        [InlineData("$expand=Manager($levels=0)", 
+        [InlineData("$expand=Manager($levels=0)",
             "")]
         [InlineData("$expand=Manager($levels=2;$expand=DirectReports($levels=2))",
             "$expand=Manager($expand=Manager($expand=DirectReports($expand=DirectReports)),DirectReports($expand=DirectReports))")]
         [InlineData("$expand=Manager($select=ID;$expand=DirectReports($levels=2;$select=Name))",
-            "$expand=Manager($select=ID;$expand=DirectReports($expand=DirectReports($select=Name);$select=Name))")]
-        public async Task LevelsWithValidNumber(string originalQuery, string expandedQuery) 
+            "$expand=Manager($select=ID;$expand=DirectReports($expand=DirectReports($select=Name);$select=Name,DirectReports))")]
+        public async Task LevelsWithValidNumber(string originalQuery, string expandedQuery)
         {
             string requestUri = this.BaseAddress + "/odata/DLManagers(5)?" + originalQuery;
 
@@ -91,7 +91,7 @@ namespace Microsoft.Test.E2E.AspNet.OData.DollarLevels
             "$expand=DirectReports($expand=DirectReports($expand=Manager($expand=Manager)),Manager($expand=Manager($expand=Manager)))")]
         [InlineData("$expand=DirectReports($levels=max;$expand=Manager($levels=max))",
             "$expand=DirectReports($expand=DirectReports($expand=DirectReports($expand=DirectReports,Manager),Manager($expand=Manager)),Manager($expand=Manager($expand=Manager)))")]
-        public async Task LevelsWithMaxValue(string originalQuery, string expandedQuery) 
+        public async Task LevelsWithMaxValue(string originalQuery, string expandedQuery)
         {
             // $expand=Manager($levels=max)
             string requestUri = this.BaseAddress + "/odata/DLManagers(5)?" + originalQuery;
@@ -132,7 +132,7 @@ namespace Microsoft.Test.E2E.AspNet.OData.DollarLevels
         }
 
         [Theory]
-        [InlineData("$expand=Manager($levels=2)", 
+        [InlineData("$expand=Manager($levels=2)",
             "The request includes a $expand path which is too deep. The maximum depth allowed is 1.")]
         public async Task InvalidLevelsWithValidator(string query, string errorMessage)
         {

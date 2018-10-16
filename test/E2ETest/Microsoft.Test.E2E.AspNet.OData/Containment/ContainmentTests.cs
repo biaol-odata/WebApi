@@ -195,7 +195,7 @@ namespace Microsoft.Test.E2E.AspNet.OData.Containment
             if (mime == "json" || mime.Contains("odata.metadata=minimal") || mime.Contains("odata.metadata=full"))
             {
                 var odataContext = (string)json["@odata.context"];
-                Assert.Equal(serviceRootUri + "/$metadata#Accounts(AccountID,PayinPIs,PayoutPI)", odataContext);
+                Assert.Equal(serviceRootUri + "/$metadata#Accounts(AccountID,PayinPIs(),PayoutPI())", odataContext);
                 var odataType = (string)results[1]["@odata.type"];
                 Assert.Equal("#Microsoft.Test.E2E.AspNet.OData.Containment.PremiumAccount", odataType);
             }
@@ -209,8 +209,8 @@ namespace Microsoft.Test.E2E.AspNet.OData.Containment
                 Assert.Equal(serviceRootUri + "/Accounts(100)/PayoutPI", (string)account["PayoutPI@odata.navigationLink"]);
 
                 var payoutPIOfAccount = account["PayoutPI"];
-                Assert.Equal(serviceRootUri + "/Accounts(100)/PayoutPI/Microsoft.Test.E2E.AspNet.OData.Containment.Delete",
-                   (string)payoutPIOfAccount["#Microsoft.Test.E2E.AspNet.OData.Containment.Delete"]["target"]);
+//                Assert.Equal(serviceRootUri + "/Accounts(100)/PayoutPI/Microsoft.Test.E2E.AspNet.OData.Containment.Delete",
+//                   (string)payoutPIOfAccount["#Microsoft.Test.E2E.AspNet.OData.Containment.Delete"]["target"]);
                 Assert.Equal("Accounts(100)/PayoutPI", (string)payoutPIOfAccount["@odata.editLink"]);
                 Assert.Equal("Accounts(100)/PayoutPI", (string)payoutPIOfAccount["@odata.id"]);
                 Assert.Equal("#Microsoft.Test.E2E.AspNet.OData.Containment.PaymentInstrument", (string)payoutPIOfAccount["@odata.type"]);
@@ -222,8 +222,8 @@ namespace Microsoft.Test.E2E.AspNet.OData.Containment
                 // Bug 1862: Functions/Actions bound to a collection of entity should be advertised.
                 /*Functions that are bound to a collection of entities are advertised in representations of that collection.*/
 
-                Assert.Equal(serviceRootUri + "/Accounts(100)/PayinPIs(101)/Microsoft.Test.E2E.AspNet.OData.Containment.Delete",
-                    payinPIsOfAccont[0]["#Microsoft.Test.E2E.AspNet.OData.Containment.Delete"]["target"]);
+//                Assert.Equal(serviceRootUri + "/Accounts(100)/PayinPIs(101)/Microsoft.Test.E2E.AspNet.OData.Containment.Delete",
+//                    payinPIsOfAccont[0]["#Microsoft.Test.E2E.AspNet.OData.Containment.Delete"]["target"]);
                 Assert.Equal("Accounts(100)/PayinPIs(101)", (string)payinPIsOfAccont[0]["@odata.editLink"]);
                 Assert.Equal("Accounts(100)/PayinPIs(101)", (string)payinPIsOfAccont[0]["@odata.id"]);
                 Assert.Equal("#Microsoft.Test.E2E.AspNet.OData.Containment.PaymentInstrument", (string)payinPIsOfAccont[0]["@odata.type"]);
@@ -252,8 +252,8 @@ namespace Microsoft.Test.E2E.AspNet.OData.Containment
 
                 var payoutPIOfPremiumAccount = premiumAccount["PayoutPI"];
 
-                Assert.Equal(serviceRootUri + "/Accounts(200)/PayoutPI/Microsoft.Test.E2E.AspNet.OData.Containment.Delete",
-                    (string)payoutPIOfPremiumAccount["#Microsoft.Test.E2E.AspNet.OData.Containment.Delete"]["target"]);
+//                Assert.Equal(serviceRootUri + "/Accounts(200)/PayoutPI/Microsoft.Test.E2E.AspNet.OData.Containment.Delete",
+//                    (string)payoutPIOfPremiumAccount["#Microsoft.Test.E2E.AspNet.OData.Containment.Delete"]["target"]);
                 Assert.Equal("Accounts(200)/PayoutPI", (string)payoutPIOfPremiumAccount["@odata.editLink"]);
                 Assert.Equal("Accounts(200)/PayoutPI", (string)payoutPIOfPremiumAccount["@odata.id"]);
                 Assert.Equal("#Microsoft.Test.E2E.AspNet.OData.Containment.PaymentInstrument", (string)payoutPIOfPremiumAccount["@odata.type"]);
@@ -263,8 +263,8 @@ namespace Microsoft.Test.E2E.AspNet.OData.Containment
                 // Bug 1862: Functions/Actions bound to a collection of entity should be advertised.
                 /*Functions that are bound to a collection of entities are advertised in representations of that collection.*/
 
-                Assert.Equal(serviceRootUri + "/Accounts(200)/PayinPIs(201)/Microsoft.Test.E2E.AspNet.OData.Containment.Delete",
-                    (string)payinPIsOfPremiumAccont[0]["#Microsoft.Test.E2E.AspNet.OData.Containment.Delete"]["target"]);
+//                Assert.Equal(serviceRootUri + "/Accounts(200)/PayinPIs(201)/Microsoft.Test.E2E.AspNet.OData.Containment.Delete",
+//                    (string)payinPIsOfPremiumAccont[0]["#Microsoft.Test.E2E.AspNet.OData.Containment.Delete"]["target"]);
                 actualValue = (string)(payinPIsOfPremiumAccont[0]["@odata.editLink"]);
                 Assert.Equal("Accounts(200)/PayinPIs(201)", actualValue);
                 Assert.Equal("Accounts(200)/PayinPIs(201)", (string)payinPIsOfPremiumAccont[0]["@odata.id"]);
@@ -310,7 +310,7 @@ namespace Microsoft.Test.E2E.AspNet.OData.Containment
 
         [Theory]
         [MemberData(nameof(MediaTypes))]
-        // To test 
+        // To test
         //      1. it is able to expand containment navigation properties from an entity that derived from the containing entity.
         //      2. it is able to expand containment navigation peroperty that is defined on an derived entity.
         // GET ~/Accounts/Namespace.PremiumAccount?$expand=PayinPIs,PayoutPI,GiftCard.
@@ -368,7 +368,7 @@ namespace Microsoft.Test.E2E.AspNet.OData.Containment
             if (mime == "json" || mime.Contains("odata.metadata=minimal") || mime.Contains("odata.metadata=full"))
             {
                 var odataContext = (string)json["@odata.context"]; // PreminumAccount
-                Assert.Equal(serviceRootUri + "/$metadata#Accounts/Microsoft.Test.E2E.AspNet.OData.Containment.PremiumAccount", odataContext);
+                Assert.Equal(serviceRootUri + "/$metadata#Accounts/Microsoft.Test.E2E.AspNet.OData.Containment.PremiumAccount(PayinPIs(),PayoutPI(),GiftCard())", odataContext);
             }
             if (mime.Contains("odata.metadata=full"))
             {
@@ -687,7 +687,7 @@ namespace Microsoft.Test.E2E.AspNet.OData.Containment
             /*
             {
               "@odata.context": "http://host/service/$metadata#Collection($ref)",
-              "value": 
+              "value":
               [
                 { "@odata.id": "Orders(10643)" },
                 { "@odata.id": "Orders(10759)" }
@@ -1041,7 +1041,7 @@ namespace Microsoft.Test.E2E.AspNet.OData.Containment
             if (mime == "json" || mime.Contains("odata.metadata=minimal") || mime.Contains("odata.metadata=full"))
             {
                 var odataContext = (string)json["@odata.context"]; // PreminumAccount
-                Assert.Equal(serviceRootUri + "/$metadata#AnonymousAccount(AccountID,PayinPIs,PayoutPI)", odataContext);
+                Assert.Equal(serviceRootUri + "/$metadata#AnonymousAccount(AccountID,PayinPIs(),PayoutPI())", odataContext);
             }
 
             if (mime.Contains("odata.metadata=full"))
@@ -1053,8 +1053,6 @@ namespace Microsoft.Test.E2E.AspNet.OData.Containment
                 Assert.Equal(serviceRootUri + "/AnonymousAccount/PayoutPI", (string)account["PayoutPI@odata.navigationLink"]);
 
                 var payoutPIOfAccount = account["PayoutPI"];
-                Assert.Equal(serviceRootUri + "/AnonymousAccount/PayoutPI/Microsoft.Test.E2E.AspNet.OData.Containment.Delete",
-                   (string)payoutPIOfAccount["#Microsoft.Test.E2E.AspNet.OData.Containment.Delete"]["target"]);
                 Assert.Equal("AnonymousAccount/PayoutPI", (string)payoutPIOfAccount["@odata.editLink"]);
                 Assert.Equal("AnonymousAccount/PayoutPI", (string)payoutPIOfAccount["@odata.id"]);
                 Assert.Equal("#Microsoft.Test.E2E.AspNet.OData.Containment.PaymentInstrument", (string)payoutPIOfAccount["@odata.type"]);
@@ -1064,8 +1062,6 @@ namespace Microsoft.Test.E2E.AspNet.OData.Containment
                 // Bug 1862: Functions/Actions bound to a collection of entity should be advertised.
                 /*Functions that are bound to a collection of entities are advertised in representations of that collection.*/
 
-                Assert.Equal(serviceRootUri + "/AnonymousAccount/PayinPIs(0)/Microsoft.Test.E2E.AspNet.OData.Containment.Delete",
-                    payinPIsOfAccont[0]["#Microsoft.Test.E2E.AspNet.OData.Containment.Delete"]["target"]);
                 Assert.Equal("AnonymousAccount/PayinPIs(0)", (string)payinPIsOfAccont[0]["@odata.editLink"]);
                 Assert.Equal("AnonymousAccount/PayinPIs(0)", (string)payinPIsOfAccont[0]["@odata.id"]);
                 Assert.Equal("#Microsoft.Test.E2E.AspNet.OData.Containment.PaymentInstrument", (string)payinPIsOfAccont[0]["@odata.type"]);
