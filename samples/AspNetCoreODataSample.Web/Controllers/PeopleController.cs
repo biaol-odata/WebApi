@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using AspNetCoreODataSample.Web.Models;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
+using static AspNetCoreODataSample.Web.Models.EdmModelBuilder;
 
 namespace AspNetCoreODataSample.Web.Controllers
 {
@@ -31,6 +32,33 @@ namespace AspNetCoreODataSample.Web.Controllers
         public IActionResult Post([FromBody]Person person)
         {
             return Created(person);
+        }
+    }
+
+    public class AssetUsageController : ODataController
+    {
+        [EnableQuery]
+        public IActionResult Get()
+        {
+            AssetUsage m = new AssetUsage
+            {
+                Id = 1,
+                AssetId = 11,
+                Interactions = 8,
+                UniqueInteractions = 10,
+                Asset = new Asset {  Id = 11, Name = "abc"}
+            };
+ 
+            AssetUsage m1 = new AssetUsage
+            {
+                Id = 2,
+                AssetId = 12,
+                Interactions = 9,
+                UniqueInteractions = 11,
+                Asset = new Asset { Id = 12, Name = "abc" }
+            };
+ 
+            return Ok(new[] { m, m1 });
         }
     }
 }

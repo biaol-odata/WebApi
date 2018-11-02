@@ -3,6 +3,8 @@
 
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.OData.Edm;
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AspNetCoreODataSample.Web.Models
 {
@@ -29,6 +31,33 @@ namespace AspNetCoreODataSample.Web.Models
             var type = builder.EntitySet<Person>("Person").EntityType;
             type.HasKey(x => new { x.FirstName, x.LastName });
             return builder.GetEdmModel();
+        }
+
+        public static IEdmModel GetCompositeModel1()
+        {
+            var builder = new ODataConventionModelBuilder();
+            builder.EntitySet<AssetUsage>("AssetUsage");
+            return builder.GetEdmModel();
+        }
+ 
+        public class AssetUsage
+        {
+            public int Id { get; set; }
+ 
+            [ForeignKey("Asset")]
+            public int? AssetId { get; set; }
+            public int YearMonthId { get; set; }
+            public int Interactions { get; set; }
+            public int UniqueInteractions { get; set; }
+            public DateTimeOffset Recency { get; set; }
+            public virtual Asset Asset { get; set; }
+        }
+ 
+        public class Asset
+        {
+            public int Id { get; set; }
+ 
+            public string Name { get; set; }
         }
     }
 }
